@@ -73,6 +73,7 @@ def main():
             if task['id']==args.id:
                 taskDescription=task['description']
                 task['status']='to-do'
+                task['updatedAt']=str(datetime.datetime.now())
                 saveFile(tasks)
                 print(f'"{taskDescription}" status changed to to-do')
         if foundTask == False:
@@ -83,6 +84,7 @@ def main():
             if task['id']==args.id:
                 taskDescription=task['description']
                 task['status']='in progress'
+                task['updatedAt']=str(datetime.datetime.now())
                 saveFile(tasks)
                 print(f'"{taskDescription}" status changed to in progress')
         if foundTask == False:
@@ -93,6 +95,7 @@ def main():
             if task['id']==args.id:
                 taskDescription=task['description']
                 task['status']='done'
+                task['updatedAt']=str(datetime.datetime.now())
                 saveFile(tasks)
                 print(f'"{taskDescription}" status changed to done')
         if foundTask == False:

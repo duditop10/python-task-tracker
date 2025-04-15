@@ -1,2 +1,8 @@
 # python-task-tracker
 Simple task tracker for a Command Line Interface (first actual project tbh, hopefully it turns out well enough).
+
+So, after a long time stuck in tutorial hell, I decided to go ahead and start doing something without much help by creating a project. With that in mind I decided to take a look at the project ideas from roadmap.sh (especifically https://roadmap.sh/projects/task-tracker) and just build them.
+
+This project is really simple. You can add tasks to a to-do list using the add command, followed by the description of the task in quotations, update the description, change the status, or delete the task based on its id (a number given to it when you create it, which you can check when you list them) and list tasks based on their status (to-do, in-progress and done), on if they're not done or without any restrictions (the list command shows the description of the task as well as when it was created, when it was updated, what is its status and what is its id). All the tasks are saved in a JSON file on a folder it creates called cli-tools. Pretty simple stuff and yet I still managed to turn it into a code monstrosity, but hey, i'm just a beginner.
+
+I also created an exe using pyinstaller so you can just put it in an empty folder (I recommend C:\cli-tools, as that's the same folder the JSON is saved in), add it to your PATH variable and be able to use it on your cmd without having to travel to whatever folder you installed it on by just typing track-cli and whatever command you need (if you want to see the commands type help as the command)

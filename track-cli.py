@@ -61,6 +61,7 @@ def main():
         foundTask=False
         for task in tasks:
             if task['id']==args.id:
+                foundTask=True
                 taskDescription=task['description']
                 tasks.remove(task)
                 saveFile(tasks)
@@ -71,6 +72,7 @@ def main():
         foundTask=False
         for task in tasks:
             if task['id']==args.id:
+                foundTask=True
                 taskDescription=task['description']
                 task['status']='to-do'
                 task['updatedAt']=str(datetime.datetime.now())
@@ -82,6 +84,7 @@ def main():
         foundTask=False
         for task in tasks:
             if task['id']==args.id:
+                foundTask=True
                 taskDescription=task['description']
                 task['status']='in progress'
                 task['updatedAt']=str(datetime.datetime.now())
@@ -93,6 +96,7 @@ def main():
         foundTask=False
         for task in tasks:
             if task['id']==args.id:
+                foundTask=True
                 taskDescription=task['description']
                 task['status']='done'
                 task['updatedAt']=str(datetime.datetime.now())

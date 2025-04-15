@@ -2,17 +2,17 @@ import datetime
 import argparse
 import json
 import os
-taskFile='tasks.json'
+taskFilePath='C:\\cli-tools\\track-cli.json'
 def loadFile():
-    if os.path.exists(taskFile):
-        with open(taskFile, "r") as f:
+    if os.path.exists(taskFilePath):
+        with open(taskFilePath, "r") as f:
             return json.load(f)
     else:
-        with open(taskFile, "x") as f:
+        with open(taskFilePath, "x") as f:
             return[]
         
 def saveFile(tasks):
-    with open(taskFile, "w") as f:
+    with open(taskFilePath, "w") as f:
         json.dump(tasks, f, indent=4)
 
 def main():
@@ -32,8 +32,8 @@ def main():
     mark_in_progress.add_argument('id', type=int, help='Numerical id of task you want to mark as in progress.')
     mark_done=subparsers.add_parser('mark-done', help='Marks task as done.')
     mark_done.add_argument('id', type=int, help='Numerical id of task you want to mark as in done.')
-    list=subparsers.add_parser('list', help='Lists tasks filtered by status (to-do, in progress, done and all). By default lists all.')
-    list.add_argument('status',nargs='?',default='all',choices=['to-do','done','in-progress','all'], help="The status by which you're filtering the tasks listed.")
+    list=subparsers.add_parser('list', help='Lists tasks filtered by status (to-do, in progress, done, not done and all). By default lists all.')
+    list.add_argument('status',nargs='?',default='all',choices=['to-do','done','in-progress','not-done','all'], help="The status by which you're filtering the tasks listed.")
     args=parser.parse_args()
     if args.command=='add':
         lastId=0;
@@ -46,45 +46,65 @@ def main():
         saveFile(tasks)
         print(f'"{task['description']}" was added')
     elif args.command=='update':
+        foundTask=False
         for task in tasks:
             if task['id']==args.id:
+                foundTask=True
                 oldDescription = task['description']
                 task['description']=args.updatedTask
                 task['updatedAt']=str(datetime.datetime.now())
                 saveFile(tasks)
                 print(f'"{oldDescription}" was updated to "{task['description']}"')
+        if foundTask == False:
+            print("Error: No such ID found")
     elif args.command=='delete':
+        foundTask=False
         for task in tasks:
             if task['id']==args.id:
                 taskDescription=task['description']
                 tasks.remove(task)
                 saveFile(tasks)
                 print(f'"{taskDescription}" was deleted')
+        if foundTask == False:
+            print("Error: No such ID found")
     elif args.command=='mark-to-do':
+        foundTask=False
         for task in tasks:
             if task['id']==args.id:
                 taskDescription=task['description']
                 task['status']='to-do'
                 saveFile(tasks)
                 print(f'"{taskDescription}" status changed to to-do')
+        if foundTask == False:
+            print("Error: No such ID found")
     elif args.command=='mark-in-progress':
+        foundTask=False
         for task in tasks:
             if task['id']==args.id:
                 taskDescription=task['description']
                 task['status']='in progress'
                 saveFile(tasks)
                 print(f'"{taskDescription}" status changed to in progress')
+        if foundTask == False:
+            print("Error: No such ID found")
     elif args.command=='mark-done':
+        foundTask=False
         for task in tasks:
             if task['id']==args.id:
                 taskDescription=task['description']
                 task['status']='done'
                 saveFile(tasks)
                 print(f'"{taskDescription}" status changed to done')
+        if foundTask == False:
+            print("Error: No such ID found")
     elif args.command=='list':
         if args.status=='all':
             for task in tasks:
                 print(f'ID:{task['id']}  ||  Task:{task['description']}  ||  Status:{task['status']}  ||  Created at:{task['createdAt']}  ||  Updated last:{task['updatedAt']}\n\n')
+        elif args.status=='not-done':
+            for task in tasks:
+                if task['status']!='done':    
+                    print(f'ID:{task['id']}  ||  Task:{task['description']}  ||  Status:{task['status']}  ||  Created at:{task['createdAt']}  ||  Updated last:{task['updatedAt']}\n\n')
         else:
             for task in tasks:
                 if task['status'].replace('-',' ')==args.status.replace('-',' '):    
